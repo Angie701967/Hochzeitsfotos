@@ -320,7 +320,7 @@
 
         <div class="toolbar">
           <button id="downloadAllButton" class="secondary">Alle herunterladen</button>
-          <button id="clearAllButton" class="danger">Galerie leeren</button>
+         
         </div>
 
       </section>
@@ -369,7 +369,6 @@
     const gateTitle = document.getElementById("gateTitle");
     const fileInput = document.getElementById("fileInput");
     const dropZone = document.getElementById("dropZone");
-    const clearAllButton = document.getElementById("clearAllButton");
     const gateText = document.getElementById("gateText");
     const downloadAllButton = document.getElementById("downloadAllButton");
 
@@ -410,9 +409,7 @@
       await handleFiles(files);
     });
 
-    clearAllButton.addEventListener("click", async () => {
-      const ok = confirm("Sollen wirklich alle Bilder aus der verknüpften Online-Galerie gelöscht werden?");
-      if (!ok) return;
+   
 
       await fetch(CONFIG.googleDrive.webAppUrl, {
         method: "POST",
