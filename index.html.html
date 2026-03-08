@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hochzeitsfotos</title>
+  <style>
+    /*
+      ==============================
+      EINFACH ANPASSEN – FARBEN
+      ==============================
+      Diese Werte kannst du später selbst ändern:
+      --bg              = Hintergrundfarbe
+      --accent          = Hauptfarbe der Buttons
+      --accent-strong   = dunklere Button-Farbe beim Darüberfahren
+      --text            = Haupt-Textfarbe
+      --muted           = hellere Textfarbe
+
+      Beispiel:
+      --accent: #c7a27c;
+      --accent-strong: #ad845d;
+    */
+    :root {
+      --bg: #f8f5f1;
+      --surface: rgba(255,255,255,0.82);
+      --surface-strong: #ffffff;
+      --text: #2d2a26;
+      --muted: #756d64;
+      --line: rgba(86, 73, 58, 0.12);
+      --accent: #b8916d;
+      --accent-strong: #9f7752;
+      --danger: #b25c5c;
+      --shadow: 0 16px 40px rgba(62, 46, 31, 0.10);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(184,145,109,0.14), transparent 28%),
+        radial-gradient(circle at right, rgba(184,145,109,0.10), transparent 26%),
+        var(--bg);
+      min-height: 100vh;
+    }
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.72));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 32px;
+      padding: 26px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 20px;
+    }
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+    h1 {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-weight: 600;
+      line-height: 1.05;
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+    .sub {
+      color: var(--muted);
+      margin: 14px 0 0;
+      font-size: 1rem;
+      line-height: 1.55;
+      max-width: 760px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+    }
+    .stat small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+    }
+    .stat strong { font-size: 1.08rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .card h2 { margin: 0 0 8px; font-size: 1.15rem; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.5; font-size: 0.95rem; }
+    .upload-zone {
+      margin-top: 16px;
+      border: 1.5px dashed rgba(184,145,109,0.6);
+      border-radius: 22px;
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.45));
+      transition: 0.2s ease;
+      text-align: center;
+    }
+    .upload-zone.dragover {
+      transform: translateY(-2px);
+      border-color: var(--accent-strong);
+      background: rgba(255,255,255,0.92);
+    }
+    .upload-zone strong { display: block; font-size: 1.05rem; margin-bottom: 6px; }
+    .upload-zone span { color: var(--muted); font-size: 0.92rem; line-height: 1.45; }
+    .actions, .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    button, .button, label.button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.18s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+    }
+    button:hover, .button:hover, label.button:hover { background: var(--accent-strong); transform: translateY(-1px); }
+    .button.secondary, button.secondary { background: #ece5dc; color: var(--text); }
+    .button.secondary:hover, button.secondary:hover { background: #e1d6ca; }
+    .button.danger, button.danger { background: #f5e5e5; color: var(--danger); }
+    .button.danger:hover, button.danger:hover { background: #efd8d8; }
+    input[type="file"] { display: none; }
+    .gallery-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .muted { color: var(--muted); font-size: 0.92rem; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+    .photo-card {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .thumb {
+      aspect-ratio: 1 / 1;
+      background: #efe9e2;
+      display: block;
+      width: 100%;
+      object-fit: cover;
+    }
+    .photo-content { padding: 12px; }
+    .photo-name { font-size: 0.92rem; font-weight: 600; margin: 0 0 6px; word-break: break-word; }
+    .photo-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+    .photo-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .empty {
+      border: 1px dashed var(--line);
+      border-radius: 22px;
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,0.42);
+    }
+    .info-list { display: grid; gap: 12px; margin-top: 16px; }
+    .info-item {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.7);
+    }
+    .info-item strong { display: block; margin-bottom: 4px; font-size: 0.95rem; }
+    .password-screen {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(248,245,241,0.92);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      padding: 20px;
+    }
+    .password-box {
+      width: min(460px, 100%);
+      background: white;
+      border-radius: 28px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .password-box h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-family: Georgia, serif;
+      font-size: 1.8rem;
+    }
+    .field { margin-top: 16px; }
+    .field label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.92rem; }
+    .field input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 13px 14px;
+      font-size: 1rem;
+      background: #fffdfb;
+    }
+    .error { color: var(--danger); font-size: 0.9rem; margin-top: 10px; min-height: 1.2em; }
+    .footer-note { margin-top: 18px; color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.65);
+      margin-top: 12px;
+    }
+    .hidden { display: none !important; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 18px, 1120px); padding-top: 18px; }
+      .hero, .card, .password-box { padding: 18px; }
+      .stats { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div id="passwordScreen" class="password-screen">
+    <div class="password-box">
+      <p class="eyebrow">Private Galerie</p>
+      <h2 id="gateTitle">Hochzeitsfotos</h2>
+      <p class="sub" id="gateText" style="margin-top:0">Bitte gib das Passwort ein, um zur Galerie zu gelangen.</p>
+      <div class="field">
+        <label for="passwordInput">Passwort</label>
+        <input id="passwordInput" type="password" placeholder="Passwort eingeben" autocomplete="off" />
+      </div>
+      <div class="actions">
+        <button id="unlockButton">Galerie öffnen</button>
+      </div>
+      <div id="passwordError" class="error"></div>
+      <div class="footer-note">
+        Tipp: Für eure echte Hochzeit sollte das Passwort später nicht im Browser-Code stehen,
+        sondern serverseitig abgesichert werden. Diese Datei ist eine schöne und sofort nutzbare Vorlage.
+      </div>
+    </div>
+  </div>
+
+  <main class="shell hidden" id="app">
+    <section class="hero">
+      <p class="eyebrow">Unsere Erinnerungen</p>
+      <h1 id="heroTitle">Anna & Max</h1>
+      <p class="sub" id="heroSubtitle">Danke, dass ihr unseren Tag begleitet. Hier könnt ihr eure schönsten Fotos ganz einfach hochladen und die bereits geteilten Bilder ansehen oder herunterladen.</p>
+      <div class="pill" id="eventDatePill">19. Juni 2026 • Private Hochzeitsgalerie</div>
+      <div class="stats">
+        <div class="stat">
+          <small>Geteilte Bilder</small>
+          <strong id="photoCount">0 Fotos</strong>
+        </div>
+        <div class="stat">
+          <small>Gesamte Datenmenge</small>
+          <strong id="totalSize">0 MB</strong>
+        </div>
+        <div class="stat">
+          <small>Zugriff</small>
+          <strong id="accessInfo">Link + Passwort</strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Fotos hochladen</h2>
+        <p>Am Handy oder Computer: antippen, Bilder auswählen, fertig. Die Dateien werden aus dem verknüpften Google-Drive-Ordner geladen.</p>
+
+        <div class="upload-zone" id="dropZone">
+          <div>
+            <strong>Fotos hier ablegen</strong>
+            <span>oder über den Button auswählen<br>JPG, PNG, HEIC/HEIF je nach Browser-Unterstützung</span>
+            <div class="actions" style="justify-content:center">
+              <label class="button" for="fileInput">Bilder auswählen</label>
+            </div>
+          </div>
+        </div>
+
+        <input id="fileInput" type="file" accept="image/*,video/*" multiple />
+
+        <div class="toolbar">
+          <button id="downloadAllButton" class="secondary">Alle herunterladen</button>
+          <button id="clearAllButton" class="danger">Galerie leeren</button>
+        </div>
+
+        <div class="info-list">
+          <div class="info-item">
+            <strong>QR-Code geeignet</strong>
+            Der Link zu dieser Seite kann direkt als QR-Code auf eure Tische oder Schilder gedruckt werden.
+          </div>
+          <div class="info-item">
+            <strong>Einfach für Gäste</strong>
+            Keine App, kein Konto, nur Seite öffnen und Fotos auswählen.
+          </div>
+          <div class="info-item">
+            <strong>Google Drive verbunden</strong>
+            Diese Version ist bereits mit deinem Google-Drive-Hochzeitsordner verbunden.
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="gallery-header">
+          <div>
+            <h2 style="margin-bottom:6px">Galerie</h2>
+            <div class="muted">Hier erscheinen alle hochgeladenen Bilder.</div>
+          </div>
+        </div>
+        <div id="gallery"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const CONFIG = {
+      weddingTitle: "Anna & Max",
+      weddingSubtitle: "Danke, dass ihr unseren Tag begleitet. Hier könnt ihr eure schönsten Fotos ganz einfach hochladen und die bereits geteilten Bilder ansehen oder herunterladen.",
+      eventDateText: "19. Juni 2026 • Private Hochzeitsgalerie",
+      password: "Liebe2026",
+      mode: "googleDrive",
+      accessLabel: "Link + Passwort",
+      storageKey: "wedding-gallery-local-v1",
+      googleDrive: {
+        folderId: "1iWdGHz-9aeRUBk8z9q3fQIo9oQaOs_4e",
+        webAppUrl: "https://script.google.com/macros/s/AKfycby1ZaeLi2u0xoFo-oL2Vx7kIIlLsuHuY-bRLLn-ybcoFzhwLsZtAjHwp58MAbXn_NLm4A/exec"
+      }
+    };
+
+    const state = { photos: [] };
+
+    const app = document.getElementById("app");
+    const passwordScreen = document.getElementById("passwordScreen");
+    const passwordInput = document.getElementById("passwordInput");
+    const passwordError = document.getElementById("passwordError");
+    const unlockButton = document.getElementById("unlockButton");
+    const gallery = document.getElementById("gallery");
+    const photoCount = document.getElementById("photoCount");
+    const totalSize = document.getElementById("totalSize");
+    const accessInfo = document.getElementById("accessInfo");
+    const heroTitle = document.getElementById("heroTitle");
+    const heroSubtitle = document.getElementById("heroSubtitle");
+    const eventDatePill = document.getElementById("eventDatePill");
+    const gateTitle = document.getElementById("gateTitle");
+    const fileInput = document.getElementById("fileInput");
+    const dropZone = document.getElementById("dropZone");
+    const clearAllButton = document.getElementById("clearAllButton");
+    const gateText = document.getElementById("gateText");
+    const downloadAllButton = document.getElementById("downloadAllButton");
+
+    heroTitle.textContent = CONFIG.weddingTitle;
+    heroSubtitle.textContent = CONFIG.weddingSubtitle;
+    eventDatePill.textContent = CONFIG.eventDateText;
+    gateTitle.textContent = CONFIG.weddingTitle;
+    gateText.textContent = "Bitte gib das Passwort ein, um zur Galerie zu gelangen. Die Dateien werden dann aus dem verknüpften Google-Drive-Ordner geladen.";
+    accessInfo.textContent = `${CONFIG.accessLabel} • Google Drive`;
+
+    unlockButton.addEventListener("click", unlock);
+    passwordInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") unlock();
+    });
+
+    fileInput.addEventListener("change", async (event) => {
+      const files = Array.from(event.target.files || []);
+      await handleFiles(files);
+      fileInput.value = "";
+    });
+
+    ["dragenter", "dragover"].forEach(type => {
+      dropZone.addEventListener(type, (event) => {
+        event.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+    });
+
+    ["dragleave", "drop"].forEach(type => {
+      dropZone.addEventListener(type, (event) => {
+        event.preventDefault();
+        dropZone.classList.remove("dragover");
+      });
+    });
+
+    dropZone.addEventListener("drop", async (event) => {
+      const files = Array.from(event.dataTransfer?.files || []);
+      await handleFiles(files);
+    });
+
+    clearAllButton.addEventListener("click", async () => {
+      const ok = confirm("Sollen wirklich alle Bilder aus der verknüpften Online-Galerie gelöscht werden?");
+      if (!ok) return;
+
+      await fetch(CONFIG.googleDrive.webAppUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "deleteAll", folderId: CONFIG.googleDrive.folderId })
+      });
+      await loadPhotos();
+    });
+
+    downloadAllButton.addEventListener("click", async () => {
+      if (!state.photos.length) {
+        alert("Es sind noch keine Bilder vorhanden.");
+        return;
+      }
+      for (const photo of state.photos) {
+        downloadPhoto(photo);
+        await wait(180);
+      }
+    });
+
+    async function unlock() {
+      const value = passwordInput.value.trim();
+      if (value !== CONFIG.password) {
+        passwordError.textContent = "Das Passwort stimmt leider nicht.";
+        return;
+      }
+      passwordError.textContent = "";
+      passwordScreen.classList.add("hidden");
+      app.classList.remove("hidden");
+      await loadPhotos();
+    }
+
+    async function loadPhotos() {
+      const url = `${CONFIG.googleDrive.webAppUrl}?action=list&folderId=${encodeURIComponent(CONFIG.googleDrive.folderId)}`;
+      const response = await fetch(url, { method: "GET" });
+      const result = await response.json();
+      state.photos = normalizePhotoList(result);
+      render();
+    }
+
+    async function handleFiles(files) {
+      const filesToUse = files.filter(file => file.type.startsWith("image/") || file.type.startsWith("video/"));
+      if (!filesToUse.length) {
+        alert("Bitte nur Bild- oder Videodateien auswählen.");
+        return;
+      }
+      const uploadPromises = filesToUse.map(file => uploadSingleFileToGoogleDrive(file));
+      await Promise.all(uploadPromises);
+      await loadPhotos();
+    }
+
+    function render() {
+      updateStats();
+      if (!state.photos.length) {
+        gallery.innerHTML = `
+          <div class="empty">
+            Noch keine Bilder vorhanden.<br>
+            Die ersten Erinnerungen können direkt oben hochgeladen werden.
+          </div>
+        `;
+        return;
+      }
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "gallery";
+
+      state.photos.forEach(photo => {
+        const card = document.createElement("article");
+        card.className = "photo-card";
+
+        let mediaElement;
+        if (photo.isVideo || (photo.type || "").startsWith("video/")) {
+          mediaElement = document.createElement("div");
+          mediaElement.className = "thumb";
+          mediaElement.style.display = "grid";
+          mediaElement.style.placeItems = "center";
+          mediaElement.style.padding = "14px";
+          mediaElement.style.textAlign = "center";
+          mediaElement.innerHTML = "<strong>Video</strong><br><span style='color: var(--muted); font-size: 0.85rem;'>Download über den Button unten</span>";
+        } else {
+          mediaElement = document.createElement("img");
+          mediaElement.className = "thumb";
+          mediaElement.src = photo.src || photo.url;
+          mediaElement.alt = photo.name || "Hochzeitsfoto";
+          mediaElement.loading = "lazy";
+        }
+
+        const content = document.createElement("div");
+        content.className = "photo-content";
+
+        const name = document.createElement("p");
+        name.className = "photo-name";
+        name.textContent = photo.name || "Datei";
+
+        const meta = document.createElement("div");
+        meta.className = "photo-meta";
+        meta.innerHTML = `${formatBytes(photo.size || 0)}<br>${formatDate(photo.uploadedAt)}`;
+
+        const actions = document.createElement("div");
+        actions.className = "photo-actions";
+
+        const downloadBtn = document.createElement("button");
+        downloadBtn.className = "secondary";
+        downloadBtn.textContent = "Herunterladen";
+        downloadBtn.addEventListener("click", () => downloadPhoto(photo));
+
+        actions.appendChild(downloadBtn);
+        content.append(name, meta, actions);
+        card.append(mediaElement, content);
+        wrapper.appendChild(card);
+      });
+
+      gallery.innerHTML = "";
+      gallery.appendChild(wrapper);
+    }
+
+    function downloadPhoto(photo) {
+      const a = document.createElement("a");
+      a.href = photo.src || photo.downloadUrl || photo.url;
+      a.download = photo.name || "hochzeitsdatei";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function normalizePhotoList(result) {
+      const photos = Array.isArray(result?.photos) ? result.photos : [];
+      return photos.map((photo, index) => ({
+        id: photo.id || String(index + 1),
+        name: photo.name || photo.filename || `Datei ${index + 1}`,
+        size: photo.size || 0,
+        type: photo.type || photo.mimeType || "",
+        uploadedAt: photo.uploadedAt || photo.createdTime || new Date().toISOString(),
+        src: photo.src || photo.thumbnailUrl || photo.downloadUrl || photo.url || "",
+        url: photo.url || photo.webViewLink || photo.downloadUrl || "",
+        downloadUrl: photo.downloadUrl || photo.url || photo.webContentLink || "",
+        isVideo: photo.isVideo || (photo.type || photo.mimeType || "").startsWith("video/")
+      }));
+    }
+
+    function updateStats() {
+      const count = state.photos.length;
+      const total = state.photos.reduce((sum, photo) => sum + (photo.size || 0), 0);
+      photoCount.textContent = `${count} ${count === 1 ? "Foto" : "Fotos"}`;
+      totalSize.textContent = formatBytes(total);
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return "0 MB";
+      const units = ["Bytes", "KB", "MB", "GB"];
+      let value = bytes;
+      let index = 0;
+      while (value >= 1024 && index < units.length - 1) {
+        value /= 1024;
+        index += 1;
+      }
+      return `${value.toFixed(value >= 10 || index === 0 ? 0 : 1)} ${units[index]}`;
+    }
+
+    function formatDate(value) {
+      if (!value) return "Unbekannt";
+      const date = new Date(value);
+      return new Intl.DateTimeFormat("de-DE", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      }).format(date);
+    }
+
+    async function uploadSingleFileToGoogleDrive(file) {
+      const base64Data = await fileToBase64(file);
+      const response = await fetch(CONFIG.googleDrive.webAppUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          action: "upload",
+          folderId: CONFIG.googleDrive.folderId,
+          fileName: file.name,
+          mimeType: file.type,
+          base64Data
+        })
+      });
+
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.message || "Upload fehlgeschlagen.");
+      }
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || "");
+          const base64 = result.includes(",") ? result.split(",")[1] : result;
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+</html>
