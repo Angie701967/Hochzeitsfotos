@@ -39,8 +39,8 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(184,145,109,0.14), transparent 28%),
-        radial-gradient(circle at right, rgba(184,145,109,0.10), transparent 26%),
+        radial-gradient(circle at top left, rgba(143,155,134,0.14), transparent 28%),
+        radial-gradient(circle at right, rgba(143,155,134,0.10), transparent 26%),
         var(--bg);
       min-height: 100vh;
     }
@@ -116,7 +116,7 @@
     .card p { margin: 0; color: var(--muted); line-height: 1.5; font-size: 0.95rem; }
     .upload-zone {
       margin-top: 16px;
-      border: 1.5px dashed rgba(184,145,109,0.6);
+      border: 1.5px dashed rgba(143,155,134,0.6);
       border-radius: 22px;
       min-height: 220px;
       display: grid;
@@ -205,7 +205,7 @@
       inset: 0;
       display: grid;
       place-items: center;
-      background: rgba(248,245,241,0.92);
+      background: rgba(238,230,220,0.92);
       backdrop-filter: blur(8px);
       z-index: 10;
       padding: 20px;
@@ -323,20 +323,6 @@
           <button id="clearAllButton" class="danger">Galerie leeren</button>
         </div>
 
-        <div class="info-list">
-          <div class="info-item">
-            <strong>QR-Code geeignet</strong>
-            Der Link zu dieser Seite kann direkt als QR-Code auf eure Tische oder Schilder gedruckt werden.
-          </div>
-          <div class="info-item">
-            <strong>Einfach für Gäste</strong>
-            Keine App, kein Konto, nur Seite öffnen und Fotos auswählen.
-          </div>
-          <div class="info-item">
-            <strong>Google Drive verbunden</strong>
-            Diese Version ist bereits mit deinem Google-Drive-Hochzeitsordner verbunden.
-          </div>
-        </div>
       </section>
 
       <section class="card">
@@ -391,7 +377,7 @@
     heroSubtitle.textContent = CONFIG.weddingSubtitle;
     eventDatePill.textContent = CONFIG.eventDateText;
     gateTitle.textContent = CONFIG.weddingTitle;
-    gateText.textContent = "Bitte gib das Passwort ein, um zur Galerie zu gelangen. Die Dateien werden dann aus dem verknüpften Google-Drive-Ordner geladen.";
+    gateText.textContent = "Bitte gib das Passwort ein, um zur Galerie zu gelangen. Die Dateien werden dann aus dem vom Brautpaar verknüpften Google-Drive-Ordner geladen.";
     accessInfo.textContent = `${CONFIG.accessLabel} • Google Drive`;
 
     unlockButton.addEventListener("click", unlock);
