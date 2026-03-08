@@ -405,12 +405,12 @@
       await handleFiles(files);
     });
 
-
     downloadAllButton.addEventListener("click", async () => {
       if (!state.photos.length) {
         alert("Es sind noch keine Bilder vorhanden.");
         return;
       }
+      
       for (const photo of state.photos) {
         downloadPhoto(photo);
         await wait(180);
